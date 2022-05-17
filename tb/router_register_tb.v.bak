@@ -1,0 +1,71 @@
+module router_register_tb (); 
+reg clk,rstn,pkt_valid,fifo_full,rst_int_reg,detect_add,ld_state,laf_state;
+reg full_state,lfd_state;
+reg [7:0]data_in;
+wire parity_done,low_pkt_valid,err;
+wire [7:0]d_out;
+integer i;
+
+router_register DUT (clk,rstn,pkt_valid,fifo_full,rst_int_reg,detect_add,ld_state,laf_state,
+full_state,lfd_state,data_in,parity_done,low_pkt_valid,err,d_out);
+
+initial
+  begin
+    clk = 0;
+	forever #5 clk = ~clk;
+  end
+  
+task rst();
+  begin
+    @(negedge clk)
+    rstn = 0;
+	@(negedge clk)
+    rstn = 1;
+  end
+endtask
+
+task task1();
+reg [7:0]header,payload,parity;
+reg [5:0]payload_len;
+  begin
+    @(negedge clk)
+	begin
+	parity = 0;
+	pkt_valid = 1;
+	detect_add = 1;
+	payload_len = 6;
+	header = {payload_len,2'b01};
+	parity = parity ^ header;
+	lfd_state = 1;
+	ld_state = 0;	
+	for (i=0;i<payload_len;i=i+1)
+      begin
+	    detect_add = 0;
+		ld_state = 1;
+		lfd_state = 0;
+		payload = {$random} %256;
+		data_in = payload;
+		parity = parity ^ data_in;
+      end
+	end
+    @(negedge clk)
+    parity = {$random} %256;	
+    pkt_valid = 0;
+    data_in = parity;
+    parity = parity ^ data_in;
+    ld_state = 0;	
+  end
+endtask
+
+initial
+  begin
+    rst();
+	fifo_full = 0;
+	full_state = 0;
+	laf_state = 0;
+	#10;
+	task1();
+        #1000 $finish;
+  end
+  
+endmodule

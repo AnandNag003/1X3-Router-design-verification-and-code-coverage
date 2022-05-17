@@ -1,0 +1,9 @@
+module router_register_tb (); 
+reg clk,rstn,pkt_valid,fifo_full,rst_int_reg,detect_add,ld_state,laf_state;
+reg full_state,lfd_state;
+reg [7:0]data_in;
+wire parity_done,low_pkt_valid,err;
+wire [7:0]d_out);
+
+router_register DUT (/*AUTOINST*/)
+  

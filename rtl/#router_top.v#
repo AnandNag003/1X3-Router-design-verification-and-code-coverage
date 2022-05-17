@@ -1,0 +1,160 @@
+module router_top(/*AUTOARG*/
+   // Outputs
+   vld_out_2, vld_out_1, vld_out_0, full, err, empty, dout, dataout,
+   busy,
+   // Inputs
+   soft_reset, resetn, read_enb_2, read_enb_1, read_enb_0, read_enb,
+   packet_valid, full_2, full_1, full_0, fifo_empty_2, fifo_empty_1,
+   fifo_empty_0, empty_2, empty_1, empty_0, datain, clk
+   );
+
+   /*AUTOINPUT*/
+   // Beginning of automatic inputs (from unused autoinst inputs)
+   input		clk;			// To fifo1 of router_fifo.v, ...
+   input [7:0]		datain;			// To fifo1 of router_fifo.v, ...
+   input		empty_0;		// To s of router_sync.v
+   input		empty_1;		// To s of router_sync.v
+   input		empty_2;		// To s of router_sync.v
+   input		fifo_empty_0;		// To fsm of router_fsm.v
+   input		fifo_empty_1;		// To fsm of router_fsm.v
+   input		fifo_empty_2;		// To fsm of router_fsm.v
+   input		full_0;			// To s of router_sync.v
+   input		full_1;			// To s of router_sync.v
+   input		full_2;			// To s of router_sync.v
+   input		packet_valid;		// To fsm of router_fsm.v, ...
+   input		read_enb;		// To fifo1 of router_fifo.v, ...
+   input		read_enb_0;		// To s of router_sync.v
+   input		read_enb_1;		// To s of router_sync.v
+   input		read_enb_2;		// To s of router_sync.v
+   input		resetn;			// To fifo1 of router_fifo.v, ...
+   input		soft_reset;		// To fifo1 of router_fifo.v, ...
+   // End of automatics
+   /*AUTOOUTPUT*/
+   // Beginning of automatic outputs (from unused autoinst outputs)
+   output		busy;			// From fsm of router_fsm.v
+   output [7:0]		dataout;		// From fifo1 of router_fifo.v, ...
+   output [7:0]		dout;			// From r of router_reg.v
+   output		empty;			// From fifo1 of router_fifo.v, ...
+   output		err;			// From r of router_reg.v
+   output		full;			// From fifo1 of router_fifo.v, ...
+   output		vld_out_0;		// From s of router_sync.v
+   output		vld_out_1;		// From s of router_sync.v
+   output		vld_out_2;		// From s of router_sync.v
+   // End of automatics
+
+   router_fifo fifo1 (/*AUTOINST*/
+		      // Outputs
+		      .full		(full),
+		      .empty		(empty),
+		      .dataout		(dataout[7:0]),
+		      // Inputs
+		      .clk		(clk),
+		      .resetn		(resetn),
+		      .soft_reset	(soft_reset),
+		      .write_enb	(write_enb),
+		      .read_enb		(read_enb),
+		      .lfd_state	(lfd_state),
+		      .datain		(datain[7:0]));
+   
+		    
+router_fifo fifo2 (/*AUTOINST*/
+		   // Outputs
+		   .full		(full),
+		   .empty		(empty),
+		   .dataout		(dataout[7:0]),
+		   // Inputs
+		   .clk			(clk),
+		   .resetn		(resetn),
+		   .soft_reset		(soft_reset),
+		   .write_enb		(write_enb),
+		   .read_enb		(read_enb),
+		   .lfd_state		(lfd_state),
+		   .datain		(datain[7:0]));
+
+   router_fifo fifo3 (/*AUTOINST*/
+		      // Outputs
+		      .full		(full),
+		      .empty		(empty),
+		      .dataout		(dataout[7:0]),
+		      // Inputs
+		      .clk		(clk),
+		      .resetn		(resetn),
+		      .soft_reset	(soft_reset),
+		      .write_enb	(write_enb),
+		      .read_enb		(read_enb),
+		      .lfd_state	(lfd_state),
+		      .datain		(datain[7:0]));
+
+   router_fsm fsm(/*AUTOINST*/
+		  // Outputs
+		  .write_enb_reg	(write_enb_reg),
+		  .detect_add		(detect_add),
+		  .ld_state		(ld_state),
+		  .laf_state		(laf_state),
+		  .lfd_state		(lfd_state),
+		  .full_state		(full_state),
+		  .rst_int_reg		(rst_int_reg),
+		  .busy			(busy),
+		  // Inputs
+		  .clk			(clk),
+		  .resetn		(resetn),
+		  .packet_valid		(packet_valid),
+		  .datain		(datain[1:0]),
+		  .fifo_full		(fifo_full),
+		  .fifo_empty_0		(fifo_empty_0),
+		  .fifo_empty_1		(fifo_empty_1),
+		  .fifo_empty_2		(fifo_empty_2),
+		  .soft_reset_0		(soft_reset_0),
+		  .soft_reset_1		(soft_reset_1),
+		  .soft_reset_2		(soft_reset_2),
+		  .parity_done		(parity_done),
+		  .low_packet_valid	(low_packet_valid));
+
+   router_reg r(/*AUTOINST*/
+		// Outputs
+		.err			(err),
+		.parity_done		(parity_done),
+		.low_packet_valid	(low_packet_valid),
+		.dout			(dout[7:0]),
+		// Inputs
+		.clk			(clk),
+		.resetn			(resetn),
+		.packet_valid		(packet_valid),
+		.datain			(datain[7:0]),
+		.fifo_full		(fifo_full),
+		.detect_add		(detect_add),
+		.ld_state		(ld_state),
+		.laf_state		(laf_state),
+		.full_state		(full_state),
+		.lfd_state		(lfd_state),
+		.rst_int_reg		(rst_int_reg));
+
+   router_sync s(/*AUTOINST*/
+		 // Outputs
+		 .vld_out_0		(vld_out_0),
+		 .vld_out_1		(vld_out_1),
+		 .vld_out_2		(vld_out_2),
+		 .write_enb		(write_enb[2:0]),
+		 .fifo_full		(fifo_full),
+		 .soft_reset_0		(soft_reset_0),
+		 .soft_reset_1		(soft_reset_1),
+		 .soft_reset_2		(soft_reset_2),
+		 // Inputs
+		 .clk			(clk),
+		 .resetn		(resetn),
+		 .detect_add		(detect_add),
+		 .write_enb_reg		(write_enb_reg),
+		 .read_enb_0		(read_enb_0),
+		 .read_enb_1		(read_enb_1),
+		 .read_enb_2		(read_enb_2),
+		 .empty_0		(empty_0),
+		 .empty_1		(empty_1),
+		 .empty_2		(empty_2),
+		 .full_0		(full_0),
+		 .full_1		(full_1),
+		 .full_2		(full_2),
+		 .datain		(datain[1:0]));
+
+endmodule
+   
+		    

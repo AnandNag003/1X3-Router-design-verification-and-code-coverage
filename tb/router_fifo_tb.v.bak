@@ -1,0 +1,151 @@
+////////// ROUTER FIFO TESTBENCH ///////////
+
+module router_fifo_tb();
+
+reg clk, resetn, soft_reset, read_enb, write_enb, lfd_state;
+reg [7:0] data_in;
+
+wire empty, full;
+wire [7:0] data_out;
+
+integer i;
+
+reg [7:0] header, payload, parity;
+reg [1:0] addr;
+reg [5:0] payload_length;
+
+
+router_fifo  f1(.clk(clk), 
+	        .resetn(resetn), 
+	        .soft_reset(soft_reset), 
+	        .write_enb(write_enb), 
+            .read_enb(read_enb), 
+	        .lfd_state(lfd_state),
+	        .data_in(data_in), 
+	        .full(full), 
+	        .empty(empty), 
+	        .data_out(data_out));
+
+//TASK TO INITIALIZE THE DATA:
+
+task initialize;
+ begin 
+	resetn = 1;
+	soft_reset = 0;
+	write_enb = 0;
+	read_enb = 0;
+ end
+endtask
+
+	//TASK FOR RESETN:
+
+task reset_n;
+begin
+	@(negedge clk)
+	resetn = 0;
+	@(negedge clk)
+	resetn = 1;
+	end
+	endtask
+
+	//TASK FOR SOFT RESET:
+
+	task softreset;
+	begin
+	@(negedge clk)
+	soft_reset = 1;
+	@(negedge clk)
+	soft_reset = 0;
+	end
+	endtask
+
+	//TASK FOR PACKET GENERATION:
+
+	task pkt_gen;
+	begin
+
+	//GENERATION OF HEADER BYTE:
+
+	@(negedge clk)
+	begin
+	  addr = 2'd1;
+	  payload_length = 3'd6;
+	  header = {payload_length, addr};
+	  data_in = header;
+	  lfd_state = 1;
+	  write_enb = 1;
+	end
+
+	//GENERATION OF PAYLOAD DATA:
+
+	for(i=0; i<= payload_length; i=i+1)
+	begin
+	lfd_state = 0;
+	@(negedge clk)
+	begin
+	  payload = $random %256;
+	  data_in = payload;
+	end
+	end
+
+	//GENERATION OF PARITY BYTE:
+
+	@(negedge clk)
+	begin
+	  parity = $random % 256;
+	  data_in = parity;
+	end
+
+end
+endtask
+
+initial 
+begin
+clk = 0;
+  forever 
+	#5 clk = ~clk;
+end
+
+initial
+begin
+  initialize;
+  
+  reset_n;
+
+  softreset;
+
+  pkt_gen;
+  #5;
+  read_enb = 1'b1;
+  #5;
+  write_enb = 1'b0;
+  wait(empty);
+  
+  repeat(10)
+  @(negedge clk);
+  
+  read_enb = 1'b0;
+  write_enb = 1'b1;
+  
+  repeat(10)
+  @(negedge clk);
+  
+  pkt_gen;
+   #5;
+  read_enb = 1'b1;
+  #5;
+  write_enb = 1'b0;
+  wait(empty);
+  
+  repeat(10)
+  @(negedge clk);
+  
+  read_enb = 1'b0;
+  write_enb = 1'b1;
+  
+end
+
+initial 
+#1500 $finish;
+
+endmodule 

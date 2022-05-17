@@ -1,0 +1,115 @@
+module router_fsm_tb ();
+reg clk,rstn,pkt_valid,parity_done,soft_rst_0,soft_rst_1,soft_rst_2;
+reg fifo_full,fifo_empty_0,fifo_empty_1,fifo_empty_2,low_pkt_valid;
+reg [1:0]data_in;
+wire busy,detect_add,ld_state,laf_state,full_state,write_enb_reg,rst_int_reg,lfd_state;
+
+router_fsm DUT (clk,rstn,pkt_valid,parity_done,soft_rst_0,soft_rst_1,soft_rst_2,
+fifo_full,fifo_empty_0,fifo_empty_1,fifo_empty_2,low_pkt_valid,data_in,
+busy,detect_add,ld_state,laf_state,full_state,write_enb_reg,rst_int_reg,lfd_state);
+
+initial
+begin
+clk = 0;
+forever #5 clk = ~clk;
+end
+
+task rst();
+begin
+@(negedge clk);
+rstn = 0;
+@(negedge clk);
+rstn = 1;
+end
+endtask
+
+task task1();
+begin
+rst;
+#10;
+pkt_valid = 1;
+data_in = 2'b00;
+fifo_empty_0 = 1;
+#10;
+#10;
+fifo_full = 0;
+pkt_valid = 0;
+#10;
+#10;
+fifo_full = 0;
+end
+endtask
+
+task task2();
+begin
+rst;
+#10;
+pkt_valid = 1;
+data_in = 2'b01;
+#10;
+#10;
+fifo_full = 1;
+#10;
+fifo_full = 0;
+#10;
+parity_done = 0;
+low_pkt_valid = 1;
+#10;
+#10;
+fifo_full = 0;
+end
+endtask
+
+task task3();
+begin
+rst;
+#10;
+pkt_valid = 1;
+data_in = 2'b10;
+#10;
+#10;
+fifo_full = 1;
+#10;
+fifo_full = 0;
+#10;
+parity_done = 0;
+low_pkt_valid = 0;
+#10;
+fifo_full = 0;
+pkt_valid = 0;
+#10;
+#10;
+fifo_full = 0;
+end
+endtask
+
+task task4();
+begin
+rst;
+#10;
+pkt_valid = 1;
+data_in = 2'b00;
+fifo_empty_0 = 1;
+#10;
+#10;
+fifo_full = 0;
+pkt_valid = 0;
+#10;
+fifo_full = 1;
+#10;
+fifo_full = 0 ;
+#10;
+parity_done = 1;
+end
+endtask
+
+initial
+begin
+rst;
+#5;
+task1;
+#10;
+$finish;
+end
+
+endmodule
