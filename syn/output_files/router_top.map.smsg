@@ -1,0 +1,2 @@
+Warning (10273): Verilog HDL warning at router_fifo.v(83): extended using "x" or "z" File: C:/Users/User/Desktop/Academics/Maven Silicon/Verilog_labs/router_project/rtl/router_fifo.v Line: 83
+Warning (10273): Verilog HDL warning at router_fifo.v(90): extended using "x" or "z" File: C:/Users/User/Desktop/Academics/Maven Silicon/Verilog_labs/router_project/rtl/router_fifo.v Line: 90

@@ -1,0 +1,97 @@
+Flow report for router_register
+Tue Apr 26 11:26:02 2022
+Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Flow Summary
+  3. Flow Settings
+  4. Flow Non-Default Global Settings
+  5. Flow Elapsed Time
+  6. Flow OS Summary
+  7. Flow Log
+  8. Flow Messages
+  9. Flow Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2017  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+
+
+
++---------------------------------------------------------------------+
+; Flow Summary                                                        ;
++-----------------------+---------------------------------------------+
+; Flow Status           ; Successful - Tue Apr 26 11:26:02 2022       ;
+; Quartus Prime Version ; 17.1.0 Build 590 10/25/2017 SJ Lite Edition ;
+; Revision Name         ; router_register                             ;
+; Top-level Entity Name ; router_register                             ;
+; Family                ; MAX V                                       ;
++-----------------------+---------------------------------------------+
+
+
++-----------------------------------------+
+; Flow Settings                           ;
++-------------------+---------------------+
+; Option            ; Setting             ;
++-------------------+---------------------+
+; Start date & time ; 04/26/2022 11:25:46 ;
+; Main task         ; Compilation         ;
+; Revision Name     ; router_register     ;
++-------------------+---------------------+
+
+
++-----------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                    ;
++--------------------------+-------------------------------+---------------+-------------+------------+
+; Assignment Name          ; Value                         ; Default Value ; Entity Name ; Section Id ;
++--------------------------+-------------------------------+---------------+-------------+------------+
+; COMPILER_SIGNATURE_ID    ; 1095595030980.165095254505464 ; --            ; --          ; --         ;
+; PROJECT_OUTPUT_DIRECTORY ; output_files                  ; --            ; --          ; --         ;
++--------------------------+-------------------------------+---------------+-------------+------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                          ;
++------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name            ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Elaboration ; 00:00:17     ; 1.0                     ; 4689 MB             ; 00:00:32                           ;
+; Total                  ; 00:00:17     ; --                      ; --                  ; 00:00:32                           ;
++------------------------+--------------+-------------------------+---------------------+------------------------------------+
+
+
++--------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                      ;
++------------------------+------------------+------------+------------+----------------+
+; Module Name            ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
++------------------------+------------------+------------+------------+----------------+
+; Analysis & Elaboration ; DESKTOP-QT3O6TL  ; Windows 10 ; 10.0       ; x86_64         ;
++------------------------+------------------+------------+------------+----------------+
+
+
+------------
+; Flow Log ;
+------------
+quartus_map --read_settings_files=on --write_settings_files=off router_register -c router_register --analysis_and_elaboration
+
+
+
